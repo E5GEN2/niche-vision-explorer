@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import DataTable from '../components/DataTable';
@@ -163,7 +162,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
       <Header
         currentDataset={currentDataset}
         datasets={datasets}
@@ -171,9 +170,9 @@ const Index = () => {
         onNewDataset={handleNewDataset}
       />
       
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-8">
             {/* Left Pane - Data Table */}
             <div className="col-span-12 lg:col-span-8">
               <DataTable
