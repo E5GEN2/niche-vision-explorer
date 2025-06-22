@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Download, RotateCcw, Save, Rocket, Play, Network } from 'lucide-react';
+import { Download, RotateCcw, Save, Rocket, Play, Network, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ControlPanelProps {
@@ -10,6 +10,7 @@ interface ControlPanelProps {
   onTrainClassifier: () => void;
   onStartAutoCollect: () => void;
   onRunClustering: () => void;
+  onCollectStats: () => void;
   isLoading?: boolean;
 }
 
@@ -20,6 +21,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   onTrainClassifier,
   onStartAutoCollect,
   onRunClustering,
+  onCollectStats,
   isLoading = false
 }) => {
   return (
@@ -61,6 +63,14 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
         <h3 className="font-semibold text-gray-800 mb-3">Workflow Controls</h3>
         <div className="space-y-2">
+          <Button
+            onClick={onCollectStats}
+            className="w-full flex items-center space-x-2 bg-blue-600 hover:bg-blue-700"
+            disabled={isLoading}
+          >
+            <BarChart3 className="h-4 w-4" />
+            <span>Collect Stats</span>
+          </Button>
           <Button
             onClick={onTrainClassifier}
             className="w-full flex items-center space-x-2 bg-blue-600 hover:bg-blue-700"

@@ -192,6 +192,7 @@ const Index = () => {
                 onTrainClassifier={() => handleAsyncAction('Train Classifier', 3000)}
                 onStartAutoCollect={() => handleAsyncAction('Start Auto-Collect', 4000)}
                 onRunClustering={() => handleAsyncAction('Run Clustering', 3500)}
+                onCollectStats={() => handleAsyncAction('Collect Stats', 2500)}
                 isLoading={isLoading}
               />
             </div>
