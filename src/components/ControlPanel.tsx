@@ -64,14 +64,6 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         <h3 className="font-semibold text-gray-800 mb-3">Workflow Controls</h3>
         <div className="space-y-2">
           <Button
-            onClick={onCollectStats}
-            className="w-full flex items-center space-x-2 bg-blue-600 hover:bg-blue-700"
-            disabled={isLoading}
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span>Collect Stats</span>
-          </Button>
-          <Button
             onClick={onTrainClassifier}
             className="w-full flex items-center space-x-2 bg-blue-600 hover:bg-blue-700"
             disabled={isLoading}
@@ -94,6 +86,14 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
           >
             <Network className="h-4 w-4" />
             <span>Run Clustering</span>
+          </Button>
+          <Button
+            onClick={onCollectStats}
+            className="w-full flex items-center space-x-2 bg-blue-600 hover:bg-blue-700"
+            disabled={isLoading}
+          >
+            <BarChart3 className="h-4 w-4" />
+            <span>Collect Stats</span>
           </Button>
         </div>
       </div>
