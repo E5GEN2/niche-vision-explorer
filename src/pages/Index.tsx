@@ -1,12 +1,16 @@
+
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import DataTable from '../components/DataTable';
-import ControlPanel from '../components/ControlPanel';
 import ClusterCards from '../components/ClusterCards';
 import Footer from '../components/Footer';
 import NewDatasetModal from '../components/NewDatasetModal';
 import LoadingOverlay from '../components/LoadingOverlay';
+import ControlsSidebar from '../components/ControlsSidebar';
 import { useToast } from '@/hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Menu } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { toast } = useToast();
@@ -16,6 +20,7 @@ const Index = () => {
   const [datasets, setDatasets] = useState(['Default Dataset', 'Gaming Videos', 'Tech Reviews']);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Sample data
   const [videoData, setVideoData] = useState([
@@ -162,7 +167,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 relative">
       <Header
         currentDataset={currentDataset}
         datasets={datasets}
@@ -170,35 +175,61 @@ const Index = () => {
         onNewDataset={handleNewDataset}
       />
       
+      {/* Controls Toggle Button */}
+      <Button
+        onClick={() => setIsSidebarOpen(true)}
+        className="fixed top-20 left-4 z-40 bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-700 hover:bg-white hover:text-gray-900 shadow-lg"
+        variant="outline"
+        size="sm"
+      >
+        <Menu className="h-4 w-4" />
+        <span className="ml-1">Controls</span>
+      </Button>
+
+      {/* Controls Sidebar */}
+      <ControlsSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        onResetTable={handleResetTable}
+        onDownloadCSV={handleDownloadCSV}
+        onSaveDataset={() => handleAsyncAction('Save Dataset')}
+        onTrainClassifier={() => handleAsyncAction('Train Classifier', 3000)}
+        onStartAutoCollect={() => handleAsyncAction('Start Auto-Collect', 4000)}
+        onRunClustering={() => handleAsyncAction('Run Clustering', 3500)}
+        onCollectStats={() => handleAsyncAction('Collect Stats', 2500)}
+        isLoading={isLoading}
+      />
+      
       <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-12 gap-8">
-            {/* Left Pane - Data Table */}
-            <div className="col-span-12 lg:col-span-8">
+          <Tabs defaultValue="data" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/60 backdrop-blur-sm border border-gray-200">
+              <TabsTrigger 
+                value="data" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
+              >
+                Data Table
+              </TabsTrigger>
+              <TabsTrigger 
+                value="analytics" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
+              >
+                Clustering & Analytics
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="data" className="mt-0">
               <DataTable
                 data={videoData}
                 onStarToggle={handleStarToggle}
                 onTitleClick={handleTitleClick}
               />
-            </div>
+            </TabsContent>
             
-            {/* Right Pane - Control Panel */}
-            <div className="col-span-12 lg:col-span-4">
-              <ControlPanel
-                onResetTable={handleResetTable}
-                onDownloadCSV={handleDownloadCSV}
-                onSaveDataset={() => handleAsyncAction('Save Dataset')}
-                onTrainClassifier={() => handleAsyncAction('Train Classifier', 3000)}
-                onStartAutoCollect={() => handleAsyncAction('Start Auto-Collect', 4000)}
-                onRunClustering={() => handleAsyncAction('Run Clustering', 3500)}
-                onCollectStats={() => handleAsyncAction('Collect Stats', 2500)}
-                isLoading={isLoading}
-              />
-            </div>
-          </div>
-          
-          {/* Clustering Section */}
-          <ClusterCards clusters={clusterData} />
+            <TabsContent value="analytics" className="mt-0">
+              <ClusterCards clusters={clusterData} />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       
