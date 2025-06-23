@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import DataTable from '../components/DataTable';
@@ -70,7 +69,7 @@ const Index = () => {
       uploadDate: '2024-02-05',
       starred: false
     }
-  ];
+  ]);
 
   const clusterData = [
     { id: 1, name: 'Tech Reviews', videoCount: 24, supplyDemandRatio: 0.12, velocity: 350 },
