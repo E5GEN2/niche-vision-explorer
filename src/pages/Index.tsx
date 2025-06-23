@@ -21,6 +21,7 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [selectedCluster, setSelectedCluster] = useState<number | null>(null);
 
   // Sample data
   const [videoData, setVideoData] = useState([
@@ -69,7 +70,7 @@ const Index = () => {
       uploadDate: '2024-02-05',
       starred: false
     }
-  ]);
+  ];
 
   const clusterData = [
     { id: 1, name: 'Tech Reviews', videoCount: 24, supplyDemandRatio: 0.12, velocity: 350 },
@@ -77,6 +78,11 @@ const Index = () => {
     { id: 3, name: 'Tutorials', videoCount: 31, supplyDemandRatio: 0.15, velocity: 280 },
     { id: 4, name: 'Unboxing', videoCount: 12, supplyDemandRatio: 0.06, velocity: 180 }
   ];
+
+  // Get filtered data for selected cluster
+  const getClusterVideos = (clusterId: number) => {
+    return videoData.filter(video => video.cluster === clusterId);
+  };
 
   // Event handlers
   const handleDatasetChange = (dataset: string) => {
@@ -110,6 +116,14 @@ const Index = () => {
 
   const handleTitleClick = (url: string) => {
     window.open(url, '_blank');
+  };
+
+  const handleClusterSelect = (clusterId: number) => {
+    setSelectedCluster(clusterId);
+  };
+
+  const handleBackToOverview = () => {
+    setSelectedCluster(null);
   };
 
   const handleAsyncAction = async (actionName: string, duration: number = 2000) => {
@@ -175,17 +189,6 @@ const Index = () => {
         onNewDataset={handleNewDataset}
       />
       
-      {/* Controls Toggle Button */}
-      <Button
-        onClick={() => setIsSidebarOpen(true)}
-        className="fixed top-20 left-4 z-40 bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-700 hover:bg-white hover:text-gray-900 shadow-lg"
-        variant="outline"
-        size="sm"
-      >
-        <Menu className="h-4 w-4" />
-        <span className="ml-1">Controls</span>
-      </Button>
-
       {/* Controls Sidebar */}
       <ControlsSidebar
         isOpen={isSidebarOpen}
@@ -203,20 +206,33 @@ const Index = () => {
       <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
           <Tabs defaultValue="data" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8 bg-white/60 backdrop-blur-sm border border-gray-200">
-              <TabsTrigger 
-                value="data" 
-                className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
+            <div className="flex items-center justify-between mb-8">
+              <TabsList className="grid grid-cols-2 w-96 bg-white/60 backdrop-blur-sm border border-gray-200">
+                <TabsTrigger 
+                  value="data" 
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
+                >
+                  Data Table
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="analytics" 
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
+                >
+                  Clustering & Analytics
+                </TabsTrigger>
+              </TabsList>
+              
+              {/* Controls Toggle Button - positioned to not overlap */}
+              <Button
+                onClick={() => setIsSidebarOpen(true)}
+                className="bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-700 hover:bg-white hover:text-gray-900 shadow-lg"
+                variant="outline"
+                size="sm"
               >
-                Data Table
-              </TabsTrigger>
-              <TabsTrigger 
-                value="analytics" 
-                className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
-              >
-                Clustering & Analytics
-              </TabsTrigger>
-            </TabsList>
+                <Menu className="h-4 w-4" />
+                <span className="ml-1">Controls</span>
+              </Button>
+            </div>
             
             <TabsContent value="data" className="mt-0">
               <DataTable
@@ -227,7 +243,15 @@ const Index = () => {
             </TabsContent>
             
             <TabsContent value="analytics" className="mt-0">
-              <ClusterCards clusters={clusterData} />
+              <ClusterCards 
+                clusters={clusterData} 
+                onClusterSelect={handleClusterSelect}
+                selectedCluster={selectedCluster}
+                clusterVideos={selectedCluster ? getClusterVideos(selectedCluster) : []}
+                onBackToOverview={handleBackToOverview}
+                onStarToggle={handleStarToggle}
+                onTitleClick={handleTitleClick}
+              />
             </TabsContent>
           </Tabs>
         </div>
