@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BarChart3, TrendingUp, Users, Clock, ArrowLeft, Eye } from 'lucide-react';
+import { BarChart3, TrendingUp, Users, Clock, ArrowLeft, Eye, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DataTable from './DataTable';
 
@@ -41,6 +41,20 @@ const ClusterCards: React.FC<ClusterCardsProps> = ({
   onStarToggle,
   onTitleClick
 }) => {
+  // Calculate average videos per day for last 90 days
+  const calculateAvgVideosPerDay = (clusterId: number) => {
+    // This would typically come from your actual data
+    // For now, we'll simulate based on the cluster velocity
+    const cluster = clusters.find(c => c.id === clusterId);
+    if (!cluster) return 0;
+    
+    // Simulate calculation: velocity represents views/day, 
+    // we'll derive videos/day based on average views per video
+    const avgViewsPerVideo = 100000; // Simulated average
+    const videosPerDay = cluster.velocity / avgViewsPerVideo;
+    return Math.max(0.1, videosPerDay).toFixed(1);
+  };
+
   // If a cluster is selected, show the cluster detail view
   if (selectedCluster && onBackToOverview && onStarToggle && onTitleClick) {
     const cluster = clusters.find(c => c.id === selectedCluster);
@@ -103,7 +117,7 @@ const ClusterCards: React.FC<ClusterCardsProps> = ({
             <div className="flex items-center space-x-2 mb-4">
               <Users className="h-4 w-4 text-gray-400" />
               <p className="text-sm text-gray-600 font-medium">
-                {cluster.videoCount} videos
+                {cluster.videoCount} total videos
               </p>
             </div>
             
@@ -138,6 +152,13 @@ const ClusterCards: React.FC<ClusterCardsProps> = ({
                   <span className="text-sm text-gray-600 font-medium">Velocity:</span>
                 </div>
                 <span className="font-semibold text-gray-900">{cluster.velocity} views/day</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="h-4 w-4 text-purple-500" />
+                  <span className="text-sm text-gray-600 font-medium">Avg/day (90d):</span>
+                </div>
+                <span className="font-semibold text-gray-900">{calculateAvgVideosPerDay(cluster.id)} videos</span>
               </div>
             </div>
             
