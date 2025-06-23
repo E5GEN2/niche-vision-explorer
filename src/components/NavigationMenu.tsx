@@ -32,26 +32,34 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 mb-6">
       <div className="flex items-center justify-between">
-        {/* Left side - Navigation tabs */}
-        <div className="flex items-center space-x-2">
-          <Button
-            onClick={() => onTabChange('data')}
-            variant={activeTab === 'data' ? 'default' : 'outline'}
-            className="flex items-center space-x-2"
-            size="sm"
-          >
-            <Table className="h-4 w-4" />
-            <span>Data Table</span>
-          </Button>
-          <Button
-            onClick={() => onTabChange('analytics')}
-            variant={activeTab === 'analytics' ? 'default' : 'outline'}
-            className="flex items-center space-x-2"
-            size="sm"
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span>Clustering & Analytics</span>
-          </Button>
+        {/* Left side - Logo and Navigation tabs */}
+        <div className="flex items-center space-x-4">
+          {/* Logo */}
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">YT</span>
+          </div>
+          
+          {/* Navigation tabs */}
+          <div className="flex items-center space-x-2">
+            <Button
+              onClick={() => onTabChange('data')}
+              variant={activeTab === 'data' ? 'default' : 'outline'}
+              className="flex items-center space-x-2"
+              size="sm"
+            >
+              <Table className="h-4 w-4" />
+              <span>Data Table</span>
+            </Button>
+            <Button
+              onClick={() => onTabChange('analytics')}
+              variant={activeTab === 'analytics' ? 'default' : 'outline'}
+              className="flex items-center space-x-2"
+              size="sm"
+            >
+              <BarChart3 className="h-4 w-4" />
+              <span>Clustering & Analytics</span>
+            </Button>
+          </div>
         </div>
 
         {/* Right side - Dataset and controls */}

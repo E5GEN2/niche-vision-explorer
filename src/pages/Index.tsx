@@ -1,6 +1,4 @@
-
 import React, { useState } from 'react';
-import Header from '../components/Header';
 import DataTable from '../components/DataTable';
 import ClusterCards from '../components/ClusterCards';
 import Footer from '../components/Footer';
@@ -189,13 +187,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
-      <Header
-        currentDataset={currentDataset}
-        datasets={datasets}
-        onDatasetChange={handleDatasetChange}
-        onNewDataset={handleNewDataset}
-      />
-      
       {/* Controls Sidebar */}
       <ControlsSidebar
         isOpen={isSidebarOpen}
