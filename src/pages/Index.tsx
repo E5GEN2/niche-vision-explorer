@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import DataTable from '../components/DataTable';
@@ -6,10 +7,8 @@ import Footer from '../components/Footer';
 import NewDatasetModal from '../components/NewDatasetModal';
 import LoadingOverlay from '../components/LoadingOverlay';
 import ControlsSidebar from '../components/ControlsSidebar';
+import NavigationMenu from '../components/NavigationMenu';
 import { useToast } from '@/hooks/use-toast';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { toast } = useToast();
@@ -21,6 +20,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCluster, setSelectedCluster] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState('data');
 
   // Sample data
   const [videoData, setVideoData] = useState([
@@ -125,6 +125,14 @@ const Index = () => {
     setSelectedCluster(null);
   };
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    // Reset cluster selection when switching tabs
+    if (tab === 'data') {
+      setSelectedCluster(null);
+    }
+  };
+
   const handleAsyncAction = async (actionName: string, duration: number = 2000) => {
     setIsLoading(true);
     try {
@@ -180,7 +188,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 relative">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
       <Header
         currentDataset={currentDataset}
         datasets={datasets}
@@ -204,55 +212,35 @@ const Index = () => {
       
       <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
-          <Tabs defaultValue="data" className="w-full">
-            <div className="flex items-center justify-between mb-8">
-              <TabsList className="grid grid-cols-2 w-96 bg-white/60 backdrop-blur-sm border border-gray-200">
-                <TabsTrigger 
-                  value="data" 
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
-                >
-                  Data Table
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="analytics" 
-                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium"
-                >
-                  Clustering & Analytics
-                </TabsTrigger>
-              </TabsList>
-              
-              {/* Controls Toggle Button - positioned to not overlap */}
-              <Button
-                onClick={() => setIsSidebarOpen(true)}
-                className="bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-700 hover:bg-white hover:text-gray-900 shadow-lg"
-                variant="outline"
-                size="sm"
-              >
-                <Menu className="h-4 w-4" />
-                <span className="ml-1">Controls</span>
-              </Button>
-            </div>
-            
-            <TabsContent value="data" className="mt-0">
-              <DataTable
-                data={videoData}
-                onStarToggle={handleStarToggle}
-                onTitleClick={handleTitleClick}
-              />
-            </TabsContent>
-            
-            <TabsContent value="analytics" className="mt-0">
-              <ClusterCards 
-                clusters={clusterData} 
-                onClusterSelect={handleClusterSelect}
-                selectedCluster={selectedCluster}
-                clusterVideos={selectedCluster ? getClusterVideos(selectedCluster) : []}
-                onBackToOverview={handleBackToOverview}
-                onStarToggle={handleStarToggle}
-                onTitleClick={handleTitleClick}
-              />
-            </TabsContent>
-          </Tabs>
+          <NavigationMenu
+            currentDataset={currentDataset}
+            datasets={datasets}
+            onDatasetChange={handleDatasetChange}
+            onNewDataset={handleNewDataset}
+            onControlsOpen={() => setIsSidebarOpen(true)}
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+          />
+          
+          {activeTab === 'data' && (
+            <DataTable
+              data={videoData}
+              onStarToggle={handleStarToggle}
+              onTitleClick={handleTitleClick}
+            />
+          )}
+          
+          {activeTab === 'analytics' && (
+            <ClusterCards 
+              clusters={clusterData} 
+              onClusterSelect={handleClusterSelect}
+              selectedCluster={selectedCluster}
+              clusterVideos={selectedCluster ? getClusterVideos(selectedCluster) : []}
+              onBackToOverview={handleBackToOverview}
+              onStarToggle={handleStarToggle}
+              onTitleClick={handleTitleClick}
+            />
+          )}
         </div>
       </main>
       
