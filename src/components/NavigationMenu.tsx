@@ -1,7 +1,7 @@
-
 import React from 'react';
-import { Plus, Menu, Table, BarChart3 } from 'lucide-react';
+import { Plus, Menu, Table, BarChart3, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface NavigationMenuProps {
   currentDataset: string;
@@ -29,8 +30,10 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   activeTab,
   onTabChange
 }) => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 mb-6">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-4 mb-6">
       <div className="flex items-center justify-between">
         {/* Left side - Logo and Navigation tabs */}
         <div className="flex items-center space-x-4">
@@ -62,11 +65,21 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
           </div>
         </div>
 
-        {/* Right side - Dataset and controls */}
+        {/* Right side - Theme switcher, Dataset and controls */}
         <div className="flex items-center space-x-3">
+          {/* Theme switcher */}
+          <div className="flex items-center space-x-2">
+            <Sun className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+            <Switch
+              checked={theme === 'dark'}
+              onCheckedChange={toggleTheme}
+            />
+            <Moon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+          </div>
+
           {/* Dataset Selector */}
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-gray-600">Dataset:</span>
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-300">Dataset:</span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
