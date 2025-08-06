@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Menu, Table, BarChart3, Sun, Moon } from 'lucide-react';
+import { Plus, Menu, Table, BarChart3, Sun, Moon, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import {
@@ -38,8 +38,9 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
         {/* Left side - Logo and Navigation tabs */}
         <div className="flex items-center space-x-4">
           {/* Logo */}
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">YT</span>
+          <div className="relative w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">A</span>
+            <Heart className="absolute -top-0.5 -right-0.5 h-3 w-3 text-red-200 fill-red-200" />
           </div>
           
           {/* Navigation tabs */}
