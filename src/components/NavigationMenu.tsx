@@ -38,9 +38,8 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
         {/* Left side - Logo and Navigation tabs */}
         <div className="flex items-center space-x-4">
           {/* Logo */}
-          <div className="relative w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">A</span>
-            <Heart className="absolute -top-0.5 -right-0.5 h-3 w-3 text-red-200 fill-red-200" />
+          <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 rounded-lg flex items-center justify-center">
+            <Heart className="h-5 w-5 text-white fill-white" />
           </div>
           
           {/* Navigation tabs */}
